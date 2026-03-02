@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skye — Weather Advisor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="app">
+    <div class="header">
+      <div class="app-name">Skye</div>
+      <div class="app-tagline">Weather-aware planning.</div>
+    </div>
+
+    <div class="card">
+
+      <div class="field-group">
+        <label for="cityInput">City</label>
+        <input type="text" id="cityInput" placeholder="Mumbai, Delhi, New York…" autocomplete="off"/>
+      </div>
+
+      <div class="field-group">
+        <label for="purposeSelect">What's the plan?</label>
+        <div class="select-wrap">
+          <select id="purposeSelect">
+            <option value="walk">🚶 Walk</option>
+            <option value="gym">Gym</option>
+            <option value="college">College</option>
+            <option value="outing">Outing</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn" id="checkBtn" onclick="checkWeather()">
+        <span id="btnText">Check Weather</span>
+      </button>
+
+      <div class="error" id="errorMsg"></div>
+
+      <!-- Result section (hidden until API returns data) -->
+      <div class="result" id="resultCard">
+
+        <!-- Decision banner -->
+        <div class="decision-banner" id="decisionBanner">
+          <div class="d-icon" id="dIcon"></div>
+          <div>
+            <div class="d-label" id="dLabel"></div>
+            <div class="d-verdict" id="dVerdict"></div>
+            <div class="d-sassy" id="dSassy"></div>
+          </div>
+        </div>
+
+        <!-- Risk / Best Time / Condition chips -->
+        <div class="meta-row">
+          <div class="meta-chip">
+            <div class="mc-label">Risk Level</div>
+            <div class="mc-val" id="riskVal">—</div>
+          </div>
+          <div class="meta-chip">
+            <div class="mc-label">Best Time</div>
+            <div class="mc-val" id="bestTime">—</div>
+          </div>
+          <div class="meta-chip">
+            <div class="mc-label">Condition</div>
+            <div class="mc-val" id="condVal">—</div>
+          </div>
+        </div>
+
+        <!-- Weather stats grid -->
+        <div class="stats-title">Current Conditions</div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="s-icon" id="tempIcon">🌡️</span>
+            <span class="s-val" id="tempVal">—</span>
+            <span class="s-key">Temp</span>
+          </div>
+          <div class="stat-box">
+            <span class="s-icon">🌡️</span>
+            <span class="s-val" id="feelsVal">—</span>
+            <span class="s-key">Feels Like</span>
+          </div>
+          <div class="stat-box">
+            <span class="s-icon">💧</span>
+            <span class="s-val" id="humidVal">—</span>
+            <span class="s-key">Humidity</span>
+          </div>
+          <div class="stat-box">
+            <span class="s-icon">💨</span>
+            <span class="s-val" id="windVal">—</span>
+            <span class="s-key">Wind</span>
+          </div>
+          <div class="stat-box">
+            <span class="s-icon">👁️</span>
+            <span class="s-val" id="visVal">—</span>
+            <span class="s-key">Visibility</span>
+          </div>
+          <div class="stat-box">
+            <span class="s-icon">☁️</span>
+            <span class="s-val" id="cloudsVal">—</span>
+            <span class="s-key">Cloud Cover</span>
+          </div>
+        </div>
+
+        <!-- Location footer -->
+        <div class="location-line">
+          <span>📍</span>
+          <span id="locationLine">—</span>
+        </div>
+
+      </div><!-- end .result -->
+    </div><!-- end .card -->
+
+    <div class="footer">Powered by OpenWeatherMap</div>
+  </div>
+
+  <script src="config.js"></script>   <!-- loads API key -->
+  <script src="script.js"></script>   <!-- loads app logic -->
+</body>
+</html>
