@@ -1,3 +1,8 @@
+/* =============================================
+   SKYE — Weather Advisor
+   script.js
+   ============================================= */
+
 const msgs = {
   walk: {
     yes: [
@@ -82,17 +87,14 @@ function analyze(weatherData, purpose) {
     go       = !isRain && temp > 10 && temp < 38 && wind < 10;
     risk     = isRain ? 'High' : (temp > 35 || humidity > 85) ? 'Medium' : 'Low';
     bestTime = temp > 30 ? '6–8 AM' : '7–9 AM';
-
   } else if (purpose === 'gym') {
     go       = !isRain && temp < 42 && wind < 15;
     risk     = (isRain || wind > 15) ? 'High' : temp > 38 ? 'Medium' : 'Low';
     bestTime = '6–8 AM or 6–8 PM';
-
   } else if (purpose === 'college') {
     go       = !['thunderstorm', 'snow'].includes(skyMain) && temp > 5 && wind < 20;
     risk     = skyMain === 'thunderstorm' ? 'High' : isRain ? 'Medium' : 'Low';
     bestTime = '8–9 AM';
-
   } else if (purpose === 'outing') {
     go       = ['clear', 'clouds'].includes(skyMain) && temp > 15 && temp < 36
                  && humidity < 80 && !isRain && wind < 12;
@@ -104,9 +106,6 @@ function analyze(weatherData, purpose) {
 }
 
 async function checkWeather() {
-  const API_KEY = CONFIG.API_KEY;
-  const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
-
   const city       = document.getElementById('cityInput').value.trim();
   const purpose    = document.getElementById('purposeSelect').value;
   const btn        = document.getElementById('checkBtn');
@@ -126,14 +125,13 @@ async function checkWeather() {
   btnText.innerHTML = 'Fetching… <span class="spinner"></span>';
 
   try {
-    const response = await fetch(
-      `${API_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`
-    );
+    // ✅ Calls your own Vercel serverless function — API key stays on the server
+    const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
 
     if (!response.ok) {
+      const err = await response.json();
       if (response.status === 404) throw new Error("City not found. Check the spelling.");
-      if (response.status === 401) throw new Error("Invalid API key. Update it in config.js.");
-      throw new Error("Something went wrong. Please try again.");
+      throw new Error(err.error || "Something went wrong. Please try again.");
     }
 
     const data = await response.json();
@@ -178,7 +176,6 @@ async function checkWeather() {
 
   } catch (error) {
     showError(error.message);
-
   } finally {
     btn.disabled        = false;
     btnText.textContent = 'Check Weather';
